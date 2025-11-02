@@ -1,25 +1,44 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
+	"strconv"
+	"strings"
 )
 
-func swap(first *int, second *int) {
-	var temp int = 0
-	temp = *first
-	*first = *second
-	*second = temp
+func GetFloat() (float64, error) {
+	r := bufio.NewReader(os.Stdin)
+	i, err := r.ReadString('\n')
+	if err != nil {
+		return 0, err
+	}
 
-	fmt.Println(*first, *second)
+	i = strings.TrimSpace(i)               
+	num, err := strconv.ParseFloat(i, 64)
+	if err != nil {
+		return 0, err
+	}
+
+	return num, nil
 }
 
-
 func main() {
-	a, b := 10, 20
-	fmt.Println(a, b)
+	fmt.Print("점수 입력: ")
 
-	swap(&a, &b) // call by pointer
-	fmt.Println(a, b)
+	score, err := GetFloat()
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	// fmt.Printf("%f\n", math.Sqrt(-9.3))
+	status := ""
+	if score >= 90 {
+		status = "합격!"
+	} else {
+		status = "불합격"
+	}
+
+	fmt.Printf("%.2f점은 %v\n", score, status)
 }
